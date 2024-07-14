@@ -38,10 +38,12 @@ export class FormComponent implements OnInit {
     const isLocalPresent = localStorage.getItem("workout_data");
     if(isLocalPresent != null) {
       const oldArray = JSON.parse(isLocalPresent);
+      this.workoutModel.id = oldArray.length + 1;
       oldArray.push(this.workoutModel);
       localStorage.setItem("workout_data", JSON.stringify(oldArray));
     } else {
       const newArray = [];
+      this.workoutModel.id = 1;
       newArray.push(this.workoutModel);
       localStorage.setItem("workout_data", JSON.stringify(newArray));
     }

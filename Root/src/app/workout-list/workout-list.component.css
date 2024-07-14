@@ -1,12 +1,15 @@
-.form {
-    width: 500px;
+.table {
+    width: 900px;
     margin: auto;
-    margin-bottom: 50px;
 }
   
 .input {
+    width: 48%;
+}
+
+.form {
     display: flex;
-    width: 100%;
+    justify-content: space-between;
 }
 
 .remove-arrow::-webkit-inner-spin-button,
