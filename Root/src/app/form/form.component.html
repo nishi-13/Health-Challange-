@@ -1,0 +1,23 @@
+
+  <form #userForm="ngForm" (ngSubmit)="saveWorkout(userForm)" class="form px-10 py-8 bg-amber-50 rounded-2xl shadow-2xl text-left">
+    <mat-form-field class="input">
+      <mat-label>Username</mat-label>
+      <input matInput #username="ngModel" name="username" placeholder="Username" 
+      required [(ngModel)]="workoutModel.name" [class.text-red-600] = "!username.invalid && username.touched">
+    </mat-form-field>
+    <mat-form-field class="input">
+        <mat-label>Select an option</mat-label>
+        <mat-select required name="workout" [(ngModel)]="workoutModel.type">
+            <mat-option *ngFor="let workout of workouts" [value]="workout">{{workout}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="input">
+      <mat-label>Workout Minutes</mat-label>
+      <input class="remove-arrow" type="number" matInput placeholder="minutes" min=0 required 
+      name="minutes" [(ngModel)]="workoutModel.minutes">
+    </mat-form-field>
+
+    <button [disabled]="userForm.form.invalid" mat-flat-button type="submit" >Add Workout</button>
+
+  </form>
