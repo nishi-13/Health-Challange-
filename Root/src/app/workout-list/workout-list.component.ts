@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule, NgForm } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from "@angular/common";
+import { MatTableModule } from '@angular/material/table';
 import { Workout } from '../workout';
-import { MatTableModule } from '@angular/material/table'  
 
 
 @Component({
@@ -25,14 +25,13 @@ import { MatTableModule } from '@angular/material/table'
   ],
 })
 
-export class WorkoutListComponent implements OnInit{
+export class WorkoutListComponent implements OnInit {
   public workouts = ['All', 'Cycling', 'Walking', 'Running', 'Swimming', 'Yoga'];
-  selected = "All";
+  selectedType = "All";
   displayedColumns: string[] = ['name', 'type', 'minutes', 'symbol'];
-  workoutList: any[] = [];
-  userWorkoutList: any[] = [];
+  workoutList: Workout[] = [];
   sname = "";
-  stype = "All";
+  userWorkoutList: UserWorkoutElement[] = [];
 
   setData(): void {
     const isLocalPresent = localStorage.getItem("workout_data");
@@ -49,17 +48,21 @@ export class WorkoutListComponent implements OnInit{
           if (!acc[uname]) {
             acc[uname] = { uname, totalMinutes: 0, workouts: [], numberWorkouts: 0, workoutsString: "" };
           }
-          acc[uname].totalMinutes += minutes;
-          acc[uname].numberWorkouts += 1;
-          if (!acc[uname].workouts.includes(type)) {
-            acc[uname].workouts.push(type);
-            acc[uname].workoutsString = Array.from(acc[uname].workouts).join(', ')
+          if (this.selectedType === "All" || type === this.selectedType) {
+            acc[uname].totalMinutes += minutes;
+            acc[uname].numberWorkouts += 1;
+            if (!acc[uname].workouts.includes(type)) {
+              acc[uname].workouts.push(type);
+              acc[uname].workoutsString = Array.from(acc[uname].workouts).join(', ')
+            }
           }
         }
         return acc;
       }, {});
-      
-      this.userWorkoutList = Object.values(groupedData);
+
+      const filteredData: UserWorkoutElement[] = Object.values(groupedData).filter((item: UserWorkoutElement) => item.totalMinutes > 0);
+
+      this.userWorkoutList = filteredData
     }
   }
 
@@ -71,5 +74,13 @@ export class WorkoutListComponent implements OnInit{
     this.setData();
   }
 
-  
+
+}
+
+export interface UserWorkoutElement {
+  uname: string;
+  totalMinutes: number;
+  workouts: string[];
+  numberWorkouts: number;
+  workoutsString: string;
 }
