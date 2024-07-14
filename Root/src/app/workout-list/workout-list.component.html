@@ -13,7 +13,7 @@
         </mat-form-field>
     </div>
  
-    <table mat-table [hidden]="!userWorkoutList.length" [dataSource]="userWorkoutList" class="mat-elevation-z8">
+    <table mat-table [hidden]="!userWorkoutList.length" [dataSource]="dataSource" class="mat-elevation-z8">
 
         <ng-container matColumnDef="name">
             <th mat-header-cell *matHeaderCellDef> Name </th>
@@ -37,5 +37,10 @@
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
+    </table>  
+    <mat-paginator [length]="userWorkoutList.length"
+        [pageSize]="pageSize"
+        [pageSizeOptions]="[5, 10]"
+        (page)="onPageChange($event)" style="margin-top: 1px;" class="table shadow-2xl">
+    </mat-paginator>
 </form>

@@ -5,9 +5,9 @@ import { MatSelectModule } from '@angular/material/select';
 import { FormsModule, NgForm } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from "@angular/common";
-import { MatTableModule } from '@angular/material/table';
+import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { Workout } from '../workout';
-
+import { MatPaginatorModule, MatPaginator } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-workout-list',
@@ -21,7 +21,8 @@ import { Workout } from '../workout';
     FormsModule,
     MatButtonModule,
     CommonModule,
-    MatTableModule
+    MatTableModule,
+    MatPaginatorModule
   ],
 })
 
@@ -32,6 +33,10 @@ export class WorkoutListComponent implements OnInit {
   workoutList: Workout[] = [];
   sname = "";
   userWorkoutList: UserWorkoutElement[] = [];
+
+  pageSize: number = 5;
+  currentPage: number = 0;
+  dataSource: UserWorkoutElement[] = [];
 
   setData(): void {
     const isLocalPresent = localStorage.getItem("workout_data");
@@ -68,12 +73,25 @@ export class WorkoutListComponent implements OnInit {
 
   ngOnInit(): void {
     this.setData();
+    this.paginateData();
   }
 
   ngDoCheck(): void {
     this.setData();
+    this.paginateData();
   }
 
+  paginateData() {
+    const startIndex = this.currentPage * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    this.dataSource = this.userWorkoutList.slice(startIndex, endIndex);
+  }
+
+  onPageChange(event: any) {
+    this.currentPage = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.paginateData();
+  }
 
 }
 
