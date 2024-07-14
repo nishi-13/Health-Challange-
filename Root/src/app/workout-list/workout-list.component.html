@@ -12,8 +12,8 @@
             </mat-select>
         </mat-form-field>
     </div>
- 
-    <table mat-table [hidden]="!userWorkoutList.length" [dataSource]="dataSource" class="mat-elevation-z8">
+    <div [hidden]="!userWorkoutList.length" >
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
         <ng-container matColumnDef="name">
             <th mat-header-cell *matHeaderCellDef> Name </th>
@@ -43,4 +43,5 @@
         [pageSizeOptions]="[5, 10]"
         (page)="onPageChange($event)" style="margin-top: 1px;" class="table shadow-2xl">
     </mat-paginator>
+    </div>
 </form>

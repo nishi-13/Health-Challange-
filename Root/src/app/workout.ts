@@ -5,6 +5,7 @@ export class Workout {
     public minutes?: number;
     public type?: 'Cycling' | 'Walking' | 'Running' | 'Swimming' | 'Yoga';
 
-    constructor() {}
+    constructor() {};
+
 
 }
