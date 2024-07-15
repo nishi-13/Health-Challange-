@@ -31,16 +31,6 @@ export class FormComponent implements OnInit {
     const isLocalPresent = localStorage.getItem("workout_data");
     if(isLocalPresent != null) {
       this.workoutList = JSON.parse(isLocalPresent);
-    } else {
-      const newArray = [];
-      localStorage.setItem("workout_data", JSON.stringify(newArray));
-      newArray.push({id: 1, name: "Nishi", minutes: 20, type: "Walking"});
-      newArray.push({id: 2, name: "Nishi", minutes: 10, type: "Running"});
-      newArray.push({id: 3, name: "Harshit", minutes: 20, type: "Running"});
-      newArray.push({id: 4, name: "Gourav", minutes: 45, type: "Swimming"});
-      newArray.push({id: 5, name: "Gourav", minutes: 30, type: "Walking"});
-      newArray.push({id: 6, name: "Nishi", minutes: 20, type: "Yoga"});
-      localStorage.setItem("workout_data", JSON.stringify(newArray));
     }
   }
 

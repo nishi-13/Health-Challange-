@@ -7,5 +7,13 @@ export class Workout {
 
     constructor() {};
 
-
 }
+
+export interface UserWorkoutElement {
+    uname: string;
+    totalMinutes: number;
+    workouts: string[];
+    numberWorkouts: number;
+    workoutsString: string;
+}
+  

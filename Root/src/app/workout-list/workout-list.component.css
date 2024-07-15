@@ -2,6 +2,11 @@
     width: 900px;
     margin: auto;
 }
+
+.entries {
+    outline: 1px solid black;
+    box-shadow: none;
+}
   
 .input {
     width: 48%;

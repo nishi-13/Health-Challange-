@@ -1,19 +1,20 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnChanges, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule, NgForm } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from "@angular/common";
-import { MatTableModule, MatTableDataSource } from '@angular/material/table';
-import { Workout } from '../workout';
-import { MatPaginatorModule, MatPaginator } from '@angular/material/paginator';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { UserWorkoutElement } from '../workout';
 
 @Component({
   selector: 'app-workout-list',
   templateUrl: './workout-list.component.html',
   styleUrl: './workout-list.component.css',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     MatFormFieldModule,
     MatSelectModule,
@@ -26,58 +27,23 @@ import { MatPaginatorModule, MatPaginator } from '@angular/material/paginator';
   ],
 })
 
-export class WorkoutListComponent implements OnInit {
+export class WorkoutListComponent {
   public workouts = ['All', 'Cycling', 'Walking', 'Running', 'Swimming', 'Yoga'];
-  selectedType = "All";
   displayedColumns: string[] = ['name', 'type', 'minutes', 'symbol'];
-  workoutList: Workout[] = [];
-  sname = "";
-  userWorkoutList: UserWorkoutElement[] = [];
+  
+  @Input() dataSource: UserWorkoutElement[] = [];
+  @Input() userWorkoutList: UserWorkoutElement[] = [];
+  sname: string = "";
+  selectedType: string = "All";
 
   pageSize: number = 5;
   currentPage: number = 0;
-  dataSource: UserWorkoutElement[] = [];
-
-  setData(): void {
-    const isLocalPresent = localStorage.getItem("workout_data");
-    if(isLocalPresent != null) {
-      this.workoutList = JSON.parse(isLocalPresent);
-      const groupedData = this.workoutList.reduce((acc, entry) => {
-        const { name, type, minutes } = entry;
-        const words = name.split(" ");
-        for (let i = 0; i < words.length; i++) {
-            words[i] = words[i][0].toUpperCase() + words[i].substr(1);
-        }
-        const uname = words.join(" ");
-        if(uname.toLocaleUpperCase().includes(this.sname.toLocaleUpperCase())) {
-          if (!acc[uname]) {
-            acc[uname] = { uname, totalMinutes: 0, workouts: [], numberWorkouts: 0, workoutsString: "" };
-          }
-          if (this.selectedType === "All" || type === this.selectedType) {
-            acc[uname].totalMinutes += minutes;
-            acc[uname].numberWorkouts += 1;
-            if (!acc[uname].workouts.includes(type)) {
-              acc[uname].workouts.push(type);
-              acc[uname].workoutsString = Array.from(acc[uname].workouts).join(', ')
-            }
-          }
-        }
-        return acc;
-      }, {});
-
-      const filteredData: UserWorkoutElement[] = Object.values(groupedData).filter((item: UserWorkoutElement) => item.totalMinutes > 0);
-
-      this.userWorkoutList = filteredData
-    }
-  }
 
   ngOnInit(): void {
-    this.setData();
     this.paginateData();
   }
 
-  ngDoCheck(): void {
-    this.setData();
+  ngOnChanges(): void {
     this.paginateData();
   }
 
@@ -93,12 +59,17 @@ export class WorkoutListComponent implements OnInit {
     this.paginateData();
   }
 
-}
+  @Output() snameChange: EventEmitter<string> = new EventEmitter<string>();
 
-export interface UserWorkoutElement {
-  uname: string;
-  totalMinutes: number;
-  workouts: string[];
-  numberWorkouts: number;
-  workoutsString: string;
+  onNameChange(event: any) {
+    this.snameChange.emit(this.sname);
+  } 
+   
+  @Output() typeChange: EventEmitter<string> = new EventEmitter<string>();
+
+  onTypeChange(event: any) {
+    console.log(this.selectedType);
+    this.typeChange.emit(this.selectedType);
+  }
+
 }

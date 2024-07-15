@@ -17,7 +17,7 @@ describe('FormComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create a new user', () => {
     expect(component).toBeTruthy();
   });
 });

@@ -2,18 +2,18 @@
     <div class='form'>
         <mat-form-field class="input">
         <mat-label>Search</mat-label>
-        <input matInput name="sname" [(ngModel)]="sname" placeholder="Search">
+        <input matInput name="sname" [(ngModel)]="sname" placeholder="Search" (input)="onNameChange($event)">
         </mat-form-field>
         
         <mat-form-field class="input">
             <mat-label>Filter by Workout Type</mat-label>
-            <mat-select required name="workout" [(ngModel)]="selectedType" >
+            <mat-select required name="workout" [(ngModel)]="selectedType" (ngModelChange)="onTypeChange($event)">
                 <mat-option *ngFor="let workout of workouts" [value]="workout">{{workout}}</mat-option>
             </mat-select>
         </mat-form-field>
     </div>
     <div [hidden]="!userWorkoutList.length" >
-    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <table class="entries" mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
         <ng-container matColumnDef="name">
             <th mat-header-cell *matHeaderCellDef> Name </th>
@@ -40,8 +40,8 @@
     </table>  
     <mat-paginator [length]="userWorkoutList.length"
         [pageSize]="pageSize"
-        [pageSizeOptions]="[5, 10]"
-        (page)="onPageChange($event)" style="margin-top: 1px;" class="table shadow-2xl">
+        [pageSizeOptions]="[5]"
+        (page)="onPageChange($event)" style="margin-top: 1px;" class="entries">
     </mat-paginator>
     </div>
 </form>

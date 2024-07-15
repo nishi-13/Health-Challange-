@@ -1,0 +1,15 @@
+<form class="table px-10 py-8 bg-amber-50 rounded-2xl shadow-2xl text-left">
+    <div class='form'>
+        <div class="list">
+        <h1>Users</h1>
+        <mat-chip-listbox class="mat-mdc-chip-set-stacked scrollable">
+            @for (user of users; track user) {
+                <mat-chip-option [selected]="username == user" (click)=setUser(user)>{{user}}</mat-chip-option>
+            }
+        </mat-chip-listbox>
+        </div>
+        <canvasjs-chart [options]="chartOptions" [styles]="{width: '60%', height:'360px'}">
+
+        </canvasjs-chart>  
+    </div>
+</form>

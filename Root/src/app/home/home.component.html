@@ -1,2 +1,11 @@
 <app-form></app-form>
-<app-workout-list></app-workout-list>
+
+<app-workout-list 
+    (typeChange)="changeType($event)"
+    (snameChange)="changeName($event)"  
+    [selectedType]="selectedType" 
+    [dataSource]="dataSource" 
+    [userWorkoutList]="userWorkoutList"
+></app-workout-list>
+
+<app-workout-graph [workoutList]="workoutList"></app-workout-graph>
